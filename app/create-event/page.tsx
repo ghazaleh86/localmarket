@@ -9,7 +9,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { MapPin, DollarSign, Users, Info, ArrowLeft, ArrowRight } from "lucide-react"
+import { DollarSign, Users, Info, ArrowLeft, ArrowRight } from "lucide-react"
+import { Navigation } from "@/components/navigation"
+import { Footer } from "@/components/footer"
 
 export default function CreateEvent() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -34,17 +36,7 @@ export default function CreateEvent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">LocalMarket</span>
-          </div>
-          <Button variant="ghost">Save Draft</Button>
-        </div>
-      </header>
+      <Navigation />
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Progress Steps */}
@@ -389,12 +381,21 @@ export default function CreateEvent() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
-            <Button size="lg" className="bg-green-600 hover:bg-green-700">
+            <Button
+              size="lg"
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => {
+                // Simulate form submission
+                alert("Event published successfully!")
+                // In a real app, this would redirect to the organizer dashboard
+              }}
+            >
               Publish Event
             </Button>
           )}
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

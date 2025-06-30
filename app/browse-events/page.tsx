@@ -1,15 +1,15 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Calendar, DollarSign, Search, Clock, CheckCircle, AlertCircle } from "lucide-react"
+import { MapPin, Calendar, DollarSign, Search, Users } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import Link from "next/link"
 
 const mockEvents = [
   {
@@ -56,7 +56,7 @@ const mockEvents = [
   },
 ]
 
-export default function VendorDashboard() {
+export default function BrowseEvents() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState("all")
   const [filterStatus, setFilterStatus] = useState("all")
@@ -84,69 +84,30 @@ export default function VendorDashboard() {
     return (event.currentVendors / event.capacity) * 100
   }
 
+  const filteredEvents = mockEvents.filter((event) => {
+    const matchesSearch =
+      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.organizer.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesType = filterType === "all" || event.type === filterType
+    const matchesStatus = filterStatus === "all" || event.status === filterStatus
+
+    return matchesSearch && matchesType && matchesStatus
+  })
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <Navigation />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Welcome Section */}
+        {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Maria!</h1>
-          <p className="text-gray-600">Discover new opportunities and manage your applications</p>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Active Applications</p>
-                  <p className="text-2xl font-bold text-gray-900">3</p>
-                </div>
-                <Clock className="w-8 h-8 text-blue-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Confirmed Events</p>
-                  <p className="text-2xl font-bold text-gray-900">2</p>
-                </div>
-                <CheckCircle className="w-8 h-8 text-green-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">This Month Revenue</p>
-                  <p className="text-2xl font-bold text-gray-900">$1,250</p>
-                </div>
-                <DollarSign className="w-8 h-8 text-purple-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Success Rate</p>
-                  <p className="text-2xl font-bold text-gray-900">85%</p>
-                </div>
-                <AlertCircle className="w-8 h-8 text-orange-600" />
-              </div>
-            </CardContent>
-          </Card>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Events</h1>
+          <p className="text-gray-600">Discover upcoming markets and events in Toronto & GTA</p>
         </div>
 
         {/* Search and Filters */}
         <div className="bg-white rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Discover Events</h2>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
@@ -181,9 +142,16 @@ export default function VendorDashboard() {
           </div>
         </div>
 
+        {/* Results Count */}
+        <div className="mb-6">
+          <p className="text-gray-600">
+            Showing {filteredEvents.length} of {mockEvents.length} events
+          </p>
+        </div>
+
         {/* Events List */}
         <div className="space-y-6">
-          {mockEvents.map((event) => (
+          {filteredEvents.map((event) => (
             <Card key={event.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -211,9 +179,14 @@ export default function VendorDashboard() {
                       </div>
                     </div>
                   </div>
-                  <Button asChild>
-                    <Link href={`/event/${event.id}`}>Apply Now</Link>
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" asChild>
+                      <Link href={`/event/${event.id}`}>View Details</Link>
+                    </Button>
+                    <Button asChild>
+                      <Link href={`/event/${event.id}`}>Apply Now</Link>
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -246,7 +219,18 @@ export default function VendorDashboard() {
             </Card>
           ))}
         </div>
+
+        {filteredEvents.length === 0 && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <Users className="w-16 h-16 mx-auto" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No events found</h3>
+            <p className="text-gray-600">Try adjusting your search criteria or check back later for new events.</p>
+          </div>
+        )}
       </div>
+
       <Footer />
     </div>
   )

@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MapPin, Calendar, Users, Clock, Share2, Heart, MessageCircle, CheckCircle, AlertTriangle } from "lucide-react"
+import { MapPin, Calendar, Users, Clock, MessageCircle, CheckCircle, AlertTriangle } from "lucide-react"
+import { Navigation } from "@/components/navigation"
+import { Footer } from "@/components/footer"
 
 const mockEvent = {
   id: 1,
@@ -63,26 +65,7 @@ export default function EventDetails() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">LocalMarket</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => setIsFavorited(!isFavorited)}>
-              <Heart className={`w-4 h-4 mr-2 ${isFavorited ? "fill-red-500 text-red-500" : ""}`} />
-              {isFavorited ? "Saved" : "Save"}
-            </Button>
-            <Button variant="ghost">
-              <Share2 className="w-4 h-4 mr-2" />
-              Share
-            </Button>
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="grid lg:grid-cols-3 gap-8">
@@ -339,7 +322,19 @@ export default function EventDetails() {
                     </div>
                   </div>
 
-                  <Button className="w-full" size="lg" onClick={() => setIsApplying(true)} disabled={isApplying}>
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    onClick={() => {
+                      setIsApplying(true)
+                      // Simulate application process
+                      setTimeout(() => {
+                        setIsApplying(false)
+                        alert("Application submitted successfully!")
+                      }, 2000)
+                    }}
+                    disabled={isApplying}
+                  >
                     {isApplying ? "Processing..." : "Apply to This Event"}
                   </Button>
 
@@ -375,6 +370,7 @@ export default function EventDetails() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
