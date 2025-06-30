@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Calendar, DollarSign, Search, Users } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { ImageWithFallback } from "@/components/image-with-fallback"
 
 const mockEvents = [
   {
@@ -152,70 +153,88 @@ export default function BrowseEvents() {
         {/* Events List */}
         <div className="space-y-6">
           {filteredEvents.map((event) => (
-            <Card key={event.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <CardTitle className="text-xl">{event.title}</CardTitle>
-                      {getStatusBadge(event)}
-                      {event.type === "kickstarter" && (
-                        <Badge variant="outline" className="text-purple-600 border-purple-200">
-                          Kickstarter-Style
-                        </Badge>
-                      )}
+            <Card key={event.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+              <div className="md:flex">
+                <div className="md:w-1/3 relative h-48 md:h-auto">
+                  <ImageWithFallback
+                    src={
+                      event.id === 1
+                        ? "/images/queen-street-market.jpg"
+                        : event.id === 2
+                          ? "/images/harbourfront-fair.jpg"
+                          : "/images/kensington-festival.jpg"
+                    }
+                    alt={event.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="md:w-2/3">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <CardTitle className="text-xl">{event.title}</CardTitle>
+                          {getStatusBadge(event)}
+                          {event.type === "kickstarter" && (
+                            <Badge variant="outline" className="text-purple-600 border-purple-200">
+                              Kickstarter-Style
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-4 h-4" />
+                            {event.location}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {event.date}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <DollarSign className="w-4 h-4" />${event.fee}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" asChild>
+                          <Link href={`/event/${event.id}`}>View Details</Link>
+                        </Button>
+                        <Button asChild>
+                          <Link href={`/event/${event.id}`}>Apply Now</Link>
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {event.location}
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="mb-4">{event.description}</CardDescription>
+
+                    {/* Funding Progress */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between text-sm mb-2">
+                        <span className="text-gray-600">
+                          {event.type === "kickstarter" ? "Funding Progress" : "Capacity"}
+                        </span>
+                        <span className="font-medium">
+                          {event.currentVendors} / {event.type === "kickstarter" ? event.fundingGoal : event.capacity}{" "}
+                          vendors
+                        </span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {event.date}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <DollarSign className="w-4 h-4" />${event.fee}
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${event.status === "funded" ? "bg-green-500" : "bg-blue-500"}`}
+                          style={{ width: `${getFundingProgress(event)}%` }}
+                        />
                       </div>
                     </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" asChild>
-                      <Link href={`/event/${event.id}`}>View Details</Link>
-                    </Button>
-                    <Button asChild>
-                      <Link href={`/event/${event.id}`}>Apply Now</Link>
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="mb-4">{event.description}</CardDescription>
 
-                {/* Funding Progress */}
-                <div className="mb-4">
-                  <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="text-gray-600">
-                      {event.type === "kickstarter" ? "Funding Progress" : "Capacity"}
-                    </span>
-                    <span className="font-medium">
-                      {event.currentVendors} / {event.type === "kickstarter" ? event.fundingGoal : event.capacity}{" "}
-                      vendors
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className={`h-2 rounded-full ${event.status === "funded" ? "bg-green-500" : "bg-blue-500"}`}
-                      style={{ width: `${getFundingProgress(event)}%` }}
-                    />
-                  </div>
+                    <div className="flex items-center justify-between text-sm text-gray-600">
+                      <span>Organized by {event.organizer}</span>
+                      <span>Apply by {event.deadline}</span>
+                    </div>
+                  </CardContent>
                 </div>
-
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>Organized by {event.organizer}</span>
-                  <span>Apply by {event.deadline}</span>
-                </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>

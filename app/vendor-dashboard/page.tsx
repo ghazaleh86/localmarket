@@ -10,6 +10,7 @@ import { MapPin, Calendar, DollarSign, Search, Clock, CheckCircle, AlertCircle }
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
+import { ImageWithFallback } from "@/components/image-with-fallback"
 
 const mockEvents = [
   {
@@ -90,10 +91,21 @@ export default function VendorDashboard() {
       <Navigation />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Maria!</h1>
-          <p className="text-gray-600">Discover new opportunities and manage your applications</p>
+        {/* Hero Section with Background */}
+        <div className="relative mb-8 rounded-2xl overflow-hidden">
+          <div className="absolute inset-0">
+            <ImageWithFallback
+              src="/images/vendor-dashboard-bg.jpg"
+              alt="Vendor workspace with handmade products"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 to-transparent" />
+          </div>
+          <div className="relative z-10 p-8 text-white">
+            <h1 className="text-3xl font-bold mb-2">Welcome back, Maria!</h1>
+            <p className="text-white/90">Discover new opportunities and manage your applications</p>
+          </div>
         </div>
 
         {/* Quick Stats */}

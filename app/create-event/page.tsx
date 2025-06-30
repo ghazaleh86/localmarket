@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { DollarSign, Users, Info, ArrowLeft, ArrowRight } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { ImageWithFallback } from "@/components/image-with-fallback"
 
 export default function CreateEvent() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -37,6 +38,22 @@ export default function CreateEvent() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <Navigation />
+
+      <div className="relative h-64 overflow-hidden">
+        <ImageWithFallback
+          src="/images/event-setup.jpg"
+          alt="Event setup with vendors preparing their stalls"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900/70 to-blue-900/50" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h1 className="text-4xl font-bold mb-2">Create Your Event</h1>
+            <p className="text-white/90">Bring your community together with a successful market</p>
+          </div>
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Progress Steps */}

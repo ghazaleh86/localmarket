@@ -6,10 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { MapPin, Calendar, Users, Clock, MessageCircle, CheckCircle, AlertTriangle } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { ImageWithFallback } from "@/components/image-with-fallback"
 
 const mockEvent = {
   id: 1,
@@ -28,7 +29,7 @@ const mockEvent = {
   organizer: {
     name: "Sam Chen",
     company: "Toronto Markets Co.",
-    avatar: "/placeholder.svg?height=40&width=40",
+    avatar: "/images/organizer-sam.jpg",
     rating: 4.8,
     eventsOrganized: 12,
   },
@@ -48,10 +49,30 @@ const mockEvent = {
     "Professional product presentation",
   ],
   committedVendors: [
-    { name: "Maria's Ceramics", category: "Artisan Crafts", avatar: "/placeholder.svg?height=32&width=32" },
-    { name: "Fresh Bites Food Co.", category: "Food & Beverage", avatar: "/placeholder.svg?height=32&width=32" },
-    { name: "Handmade Jewelry Co.", category: "Accessories", avatar: "/placeholder.svg?height=32&width=32" },
-    { name: "Urban Garden Herbs", category: "Food & Beverage", avatar: "/placeholder.svg?height=32&width=32" },
+    {
+      name: "Maria's Ceramics",
+      category: "Artisan Crafts",
+      avatar: "/images/vendor-ceramics.jpg",
+      image: "/images/vendor-ceramics.jpg",
+    },
+    {
+      name: "Fresh Bites Food Co.",
+      category: "Food & Beverage",
+      avatar: "/images/vendor-food.jpg",
+      image: "/images/vendor-food.jpg",
+    },
+    {
+      name: "Handmade Jewelry Co.",
+      category: "Accessories",
+      avatar: "/images/vendor-jewelry.jpg",
+      image: "/images/vendor-jewelry.jpg",
+    },
+    {
+      name: "Urban Garden Herbs",
+      category: "Food & Beverage",
+      avatar: "/images/vendor-herbs.jpg",
+      image: "/images/vendor-herbs.jpg",
+    },
   ],
 }
 
@@ -73,34 +94,39 @@ export default function EventDetails() {
           <div className="lg:col-span-2 space-y-6">
             {/* Event Header */}
             <Card>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <CardTitle className="text-2xl">{mockEvent.title}</CardTitle>
-                      <Badge className="bg-yellow-100 text-yellow-800">Funding</Badge>
-                      <Badge variant="outline" className="text-purple-600 border-purple-200">
-                        Kickstarter-Style
-                      </Badge>
+              <div className="relative h-64 overflow-hidden rounded-t-lg">
+                <ImageWithFallback
+                  src="/images/queen-street-market.jpg"
+                  alt={mockEvent.title}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute bottom-4 left-6 text-white">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h1 className="text-2xl font-bold">{mockEvent.title}</h1>
+                    <Badge className="bg-yellow-100 text-yellow-800">Funding</Badge>
+                    <Badge variant="outline" className="text-white border-white">
+                      Kickstarter-Style
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-4 text-white/90">
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-4 h-4" />
+                      {mockEvent.location}
                     </div>
-                    <div className="flex items-center gap-4 text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {mockEvent.location}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {mockEvent.date}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {mockEvent.time}
-                      </div>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      {mockEvent.date}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {mockEvent.time}
                     </div>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent>
+              </div>
+              <CardContent className="pt-6">
                 <p className="text-gray-700 leading-relaxed">{mockEvent.description}</p>
               </CardContent>
             </Card>
@@ -151,12 +177,19 @@ export default function EventDetails() {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
                   {mockEvent.committedVendors.map((vendor, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src={vendor.avatar || "/placeholder.svg"} alt={vendor.name} />
-                        <AvatarFallback>{vendor.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
+                    <div
+                      key={index}
+                      className="group hover:shadow-md transition-shadow rounded-lg overflow-hidden bg-white border"
+                    >
+                      <div className="relative h-32">
+                        <ImageWithFallback
+                          src={vendor.image || "/placeholder.svg"}
+                          alt={vendor.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="p-3">
                         <p className="font-medium">{vendor.name}</p>
                         <p className="text-sm text-gray-600">{vendor.category}</p>
                       </div>
@@ -261,9 +294,12 @@ export default function EventDetails() {
                   <CardContent>
                     <div className="flex items-start gap-4">
                       <Avatar className="w-16 h-16">
-                        <AvatarImage
+                        <ImageWithFallback
                           src={mockEvent.organizer.avatar || "/placeholder.svg"}
                           alt={mockEvent.organizer.name}
+                          width={64}
+                          height={64}
+                          className="rounded-full"
                         />
                         <AvatarFallback>{mockEvent.organizer.name.charAt(0)}</AvatarFallback>
                       </Avatar>

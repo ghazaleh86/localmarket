@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { MapPin } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { ImageWithFallback } from "@/components/image-with-fallback"
 
 export default function SignupPage() {
   const [userType, setUserType] = useState("vendor")
@@ -48,10 +49,15 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen relative">
+      <div className="absolute inset-0 z-0">
+        <ImageWithFallback src="/images/artisan-fair.jpg" alt="Artisan fair background" fill className="object-cover" />
+        <div className="absolute inset-0 bg-white/90" />
+      </div>
+
       <Navigation />
 
-      <div className="container mx-auto px-4 py-16 flex items-center justify-center">
+      <div className="relative z-10 container mx-auto px-4 py-16 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mx-auto mb-4">
