@@ -9,10 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { DollarSign, Users, Info, ArrowLeft, ArrowRight } from "lucide-react"
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
-import { ImageWithFallback } from "@/components/image-with-fallback"
+import { MapPin, DollarSign, Users, Info, ArrowLeft, ArrowRight } from "lucide-react"
 
 export default function CreateEvent() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -37,23 +34,17 @@ export default function CreateEvent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <Navigation />
-
-      <div className="relative h-64 overflow-hidden">
-        <ImageWithFallback
-          src="/images/event-setup.jpg"
-          alt="Event setup with vendors preparing their stalls"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/70 to-blue-900/50" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white">
-            <h1 className="text-4xl font-bold mb-2">Create Your Event</h1>
-            <p className="text-white/90">Bring your community together with a successful market</p>
+      <header className="bg-white border-b">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+              <MapPin className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-gray-900">LocalMarket</span>
           </div>
+          <Button variant="ghost">Save Draft</Button>
         </div>
-      </div>
+      </header>
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Progress Steps */}
@@ -398,21 +389,12 @@ export default function CreateEvent() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
-            <Button
-              size="lg"
-              className="bg-green-600 hover:bg-green-700"
-              onClick={() => {
-                // Simulate form submission
-                alert("Event published successfully!")
-                // In a real app, this would redirect to the organizer dashboard
-              }}
-            >
+            <Button size="lg" className="bg-green-600 hover:bg-green-700">
               Publish Event
             </Button>
           )}
         </div>
       </div>
-      <Footer />
     </div>
   )
 }

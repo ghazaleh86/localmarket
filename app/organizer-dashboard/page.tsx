@@ -6,11 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { MapPin, Calendar, DollarSign, Users, Plus, Eye, MessageCircle } from "lucide-react"
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
-import Link from "next/link"
-import { ImageWithFallback } from "@/components/image-with-fallback"
+import { MapPin, Calendar, DollarSign, Users, Plus, Eye, MessageCircle, Settings } from "lucide-react"
 
 const mockEvents = [
   {
@@ -80,32 +76,38 @@ export default function OrganizerDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <Navigation />
-
-      <div className="container mx-auto px-4 py-8">
-        {/* Enhanced Welcome Section */}
-        <div className="relative mb-8 rounded-2xl overflow-hidden">
-          <div className="absolute inset-0">
-            <ImageWithFallback
-              src="/images/organizer-planning.jpg"
-              alt="Event organizer planning a market"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-transparent" />
-          </div>
-          <div className="relative z-10 p-8 flex items-center justify-between">
-            <div className="text-white">
-              <h1 className="text-3xl font-bold mb-2">Welcome back, Sam!</h1>
-              <p className="text-white/90">Manage your events and track their success</p>
+      <header className="bg-white border-b">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+              <MapPin className="w-5 h-5 text-white" />
             </div>
-            <Button size="lg" asChild className="bg-white text-gray-900 hover:bg-gray-100">
-              <Link href="/create-event">
-                <Plus className="w-4 h-4 mr-2" />
-                Create New Event
-              </Link>
+            <span className="text-xl font-bold text-gray-900">LocalMarket</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost">
+              <MessageCircle className="w-4 h-4 mr-2" />
+              Messages
+            </Button>
+            <Button variant="ghost">
+              <Settings className="w-4 h-4 mr-2" />
+              Settings
             </Button>
           </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Welcome Section */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Sam!</h1>
+            <p className="text-gray-600">Manage your events and track their success</p>
+          </div>
+          <Button size="lg">
+            <Plus className="w-4 h-4 mr-2" />
+            Create New Event
+          </Button>
         </div>
 
         {/* Quick Stats */}
@@ -347,7 +349,6 @@ export default function OrganizerDashboard() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </div>
   )
 }
